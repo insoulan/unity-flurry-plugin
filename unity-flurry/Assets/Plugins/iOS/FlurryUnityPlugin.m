@@ -4,18 +4,18 @@ void flurryStartSession(char *appKey){
     [Flurry startSession:[NSString stringWithCString:appKey encoding:NSASCIIStringEncoding]];
 }
 
-void flurryLogEvent(char *eventName){
-    [Flurry logEvent:[NSString stringWithCString:eventName encoding:NSASCIIStringEncoding]];
+int flurryLogEvent(char *eventName){
+    return [Flurry logEvent:[NSString stringWithCString:eventName encoding:NSASCIIStringEncoding]];
 }
 
-void flurryLogEventWithParameter(char *eventName, char **keys, char **values, int size){
+int flurryLogEventWithParameter(char *eventName, char **keys, char **values, int size){
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     for (int i = 0; i < size; i++) {
         [parameters setObject:[NSString stringWithCString:(char *)values[i] encoding:NSASCIIStringEncoding]
                         forKey:[NSString stringWithCString:(char *)keys[i] encoding:NSASCIIStringEncoding]];
     }
 
-    [Flurry logEvent:[NSString stringWithCString:eventName encoding:NSASCIIStringEncoding]
+    return [Flurry logEvent:[NSString stringWithCString:eventName encoding:NSASCIIStringEncoding]
                withParameters:parameters];
 }
 
@@ -44,6 +44,11 @@ void flurryLogError(char *errorId, char *message){
 void flurrySetCrashReporting(BOOL enabled)
 {
     [Flurry setCrashReportingEnabled: enabled];
+}
+
+void flurrySetDebugLog(BOOL enabled)
+{
+    [Flurry setDebugLogEnabled: enabled];
 }
 
 bool flurryIsIpad(){

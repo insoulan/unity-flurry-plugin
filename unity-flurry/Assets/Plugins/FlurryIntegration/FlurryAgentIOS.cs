@@ -10,10 +10,10 @@ public class FlurryAgentIOS : FlurryAgent
     private static extern void flurryStartSession(string appKey);
 
     [DllImport("__Internal")]
-    private static extern void flurryLogEvent(string eventName);
+    private static extern int flurryLogEvent(string eventName);
 
     [DllImport("__Internal")]
-    private static extern void flurryLogEventWithParameter(string eventName, string[] keys, string[] value, int size);
+    private static extern int flurryLogEventWithParameter(string eventName, string[] keys, string[] value, int size);
 
     [DllImport("__Internal")]
     private static extern void flurrySetUserID(string userId);
@@ -32,6 +32,9 @@ public class FlurryAgentIOS : FlurryAgent
 
     [DllImport("__Internal")]
     private static extern void flurrySetCrashReporting(bool enabled);
+    
+    [DllImport("__Internal")]
+	  private static extern void flurrySetDebugLog(bool enabled);
 
     public override void onStartSession(string apiKey)
     {
@@ -43,12 +46,12 @@ public class FlurryAgentIOS : FlurryAgent
         // Do Nothing
     }
 
-    public override void logEvent(string eventId)
+    public override int logEvent(string eventId)
     {
-        flurryLogEvent(eventId);
+        return flurryLogEvent(eventId);
     }
 
-    public override void logEvent(string eventId, Hashtable parameters)
+    public override int logEvent(string eventId, Hashtable parameters)
     {
         string[] keys = new string[parameters.Count];
         string[] values = new string[parameters.Count];
@@ -60,7 +63,7 @@ public class FlurryAgentIOS : FlurryAgent
             values[i] = kvp.Value + "";
             i++;
         }
-        flurryLogEventWithParameter(eventId, keys, values, parameters.Count);
+        return flurryLogEventWithParameter(eventId, keys, values, parameters.Count);
     }
 
     public override void onError(string errorId, string message, string errorClass)
@@ -104,6 +107,11 @@ public class FlurryAgentIOS : FlurryAgent
     {
         flurrySetCrashReporting(enabled);
     }
+    
+    public override void setDebugLog(bool enabled)
+	  {
+	  		flurrySetDebugLog(enabled);
+	  }
 
     public override void Dispose() {}
 };

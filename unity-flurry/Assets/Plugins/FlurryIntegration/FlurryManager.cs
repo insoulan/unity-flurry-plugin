@@ -93,20 +93,22 @@ public class FlurryManager : MonoBehaviour
         }
     }
 
-    static public void logEvent(string eventId)
+    static public int logEvent(string eventId)
     {
         if (flurryAgent != null)
         {
-            flurryAgent.logEvent(eventId);
+            return flurryAgent.logEvent(eventId);
         }
+        return -1;
     }
 
-    static public void logEvent(string eventId, Hashtable parameters)
+    static public int logEvent(string eventId, Hashtable parameters)
     {
         if (flurryAgent != null)
         {
-            flurryAgent.logEvent(eventId, parameters);
+            return flurryAgent.logEvent(eventId, parameters);
         }
+        return -1;
     }
 
     static public void onError(string errorId, string message, string errorClass)
@@ -154,6 +156,14 @@ public class FlurryManager : MonoBehaviour
         if (flurryAgent != null)
         {
             flurryAgent.setReportLocation(reportLocation);
+        }
+    }
+
+    static public void setDebugLog(bool enabled)
+    {
+        if (flurryAgent != null)
+        {
+            flurryAgent.setDebugLog(enabled);
         }
     }
 }
