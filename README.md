@@ -33,5 +33,5 @@ Xcode/フレームワーク自動追加
  * キャッチしてない例外やエラーを自動的に送る
  * Flurry SDK Version 
     * iOS : 6.0.0
-    * Android : 4.0.0
+    * Android : 5.0.0
  
