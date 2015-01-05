@@ -31,12 +31,12 @@ public class FlurryAgentAndroid : FlurryAgent
         }
     }
 
-    public override void logEvent(string eventId)
+    public override int logEvent(string eventId)
     {
-        cls_FlurryAgent.CallStatic("logEvent", eventId);
+        return cls_FlurryAgent.CallStatic<int>("logEvent", eventId);
     }
 
-    public override void logEvent(string eventId, Hashtable parameters)
+    public override int logEvent(string eventId, Hashtable parameters)
     {
         using(AndroidJavaObject obj_HashMap = new AndroidJavaObject("java.util.HashMap"))
         {
@@ -59,7 +59,7 @@ public class FlurryAgentAndroid : FlurryAgent
                     }
                 }
             }
-            cls_FlurryAgent.CallStatic("logEvent", eventId, obj_HashMap);
+            return cls_FlurryAgent.CallStatic<int>("logEvent", eventId, obj_HashMap);
         }
     }
 
@@ -75,7 +75,7 @@ public class FlurryAgentAndroid : FlurryAgent
 
     public override void setUserID(string userId)
     {
-        cls_FlurryAgent.CallStatic("setUserID", userId);
+        //cls_FlurryAgent.CallStatic("setUserID", userId);
     }
 
     public override void setAge(int age)
@@ -107,6 +107,11 @@ public class FlurryAgentAndroid : FlurryAgent
     public void setLogEnabled(bool enabled)
     {
         cls_FlurryAgent.CallStatic("setLogEnabled", enabled);
+    }
+
+    public override void setDebugLog (bool enabled)
+    {
+        //cls_FlurryAgent.CallStatic("setDebugLog", enabled);
     }
 
     public override void Dispose()
