@@ -15,6 +15,7 @@ public class FlurryAgentAndroid : FlurryAgent
         {
             using(AndroidJavaObject obj_Activity = cls_UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
             {
+                cls_FlurryAgent.CallStatic("init", obj_Activity, apiKey);
                 cls_FlurryAgent.CallStatic("onStartSession", obj_Activity, apiKey);
             }
         }
@@ -38,12 +39,12 @@ public class FlurryAgentAndroid : FlurryAgent
 
     public override int logEvent(string eventId, Hashtable parameters)
     {
-        using(AndroidJavaObject obj_HashMap = new AndroidJavaObject("java.util.HashMap"))
+        using(AndroidJavaObject obj_HashMap = new AndroidJavaObject("java.util.HashMap<String, String>"))
         {
             // Call 'put' via the JNI instead of using helper classes to avoid:
             //  "JNI: Init'd AndroidJavaObject with null ptr!"
             IntPtr method_Put = AndroidJNIHelper.GetMethodID(obj_HashMap.GetRawClass(), "put",
-                                "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+                                "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
 
             object[] args = new object[2];
             foreach (DictionaryEntry kvp in parameters)
@@ -59,7 +60,8 @@ public class FlurryAgentAndroid : FlurryAgent
                     }
                 }
             }
-            return cls_FlurryAgent.CallStatic<int>("logEvent", eventId, obj_HashMap);
+            return cls_FlurryAgent.CallStatic<int>("logEvent", 
+                eventId, obj_HashMap);
         }
     }
 
